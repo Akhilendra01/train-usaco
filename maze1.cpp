@@ -57,7 +57,8 @@ void solve(){
 	for(int j={};j<=m;j++){
 		if(gr[0][j]==' '){
 			dfs(1, j, 1);
-		}
+		
+}}
 		if(gr[n][j]==' '){
 			dfs(n-1, j, 1);
 		}
@@ -84,4 +85,3 @@ int32_t main(){
 	solve();
 	
 	return 0;
-}
