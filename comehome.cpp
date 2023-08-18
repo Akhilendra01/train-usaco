@@ -36,13 +36,14 @@ void solve(){
 
 	while(!pq.empty()){
 		auto [d, node]=pq.top();
+		d*=-1;
 		pq.pop();
 
 		for(auto [child, wt]: gr[node]){
 			int val{d+wt};
 			if(ans[child]>val){
 				ans[child]=val;
-				pq.push({val, child});
+				pq.push({-val, child});
 			}
 		}
 	}
