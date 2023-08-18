@@ -1,6 +1,6 @@
 /*
 ID: akhilen1
-TASK: test
+TASK: fracdec
 LANG: C++                 
 */
 
@@ -9,63 +9,81 @@ using namespace std;
 
 #define int long long int
 
-typedef pair<int, pair<int, int>> pp;
-
 void solve(){
-    int k,n; cin>>k>>n;
+	int a, b;
+	cin>>a>>b;
 
-    int mx=-1,mn=INT_MAX;
+	map<int, int> last;
+	map<int, int> trail;
 
-    int a[k][n];
+	int n{a%b}, I{a/b};
 
-	for(int i=0;i<k;i++){
-	    for(int j=0;j<n;j++){
-	        cin>>a[i][j];
-	    }
+	string ans{to_string(I)+"."};
+
+	if(n==0){
+		ans+='0';
+		cout<<ans<<"\n";
+		return;
 	}
 
-	priority_queue<pp, vector<pp>, greater<pp>>pq;
-	for(int i=0;i<k;i++){
-	    pq.push({a[i][0], {i,0}});
-	    mx=max(mx, a[i][0]);
-	    mn=min(mn, a[i][0]);
-	} 
-	
-	int ans= mx-mn;
-	int lf=mn, rt=mx;
-	
-	while(!pq.empty()){
-	    pair<int,pair<int,int>>p= pq.top();
-	    pq.pop();
-	    
-	    mn=p.first;
-	    if(mx-mn<ans){
-	        ans=mx-mn;
-	        lf=mn, rt=mx;
-	    }
-	    int row= p.second.first;
-	    int col= p.second.second;
-	    
-	    if(col+1<n){
-	        pq.push({a[row][col+1],{row,col+1}});
-	        if(a[row][col+1]>mx){
-	            mx=a[row][col+1];
-	        }
-	    }
-	    else{
-	        break;
-	    }   
+	int idx{(int)ans.size()};
+
+	while(last.find(n)==last.end() and n){
+		last[n]=idx;
+		int x{n}, c{};
+		while(x%10==0){
+			c++;
+			x/=10;
+			last[x]=idx;
+			trail[x]=c;
+		}
+
+		idx++;
+
+		if(n<b)n*=10;
+		while(n<b){
+			n*=10;
+			ans+='0';
+			idx++;
+		}
+
+		ans+=to_string(n/b);
+		n%=b;
 	}
-    cout<<lf<<" "<<rt<<endl;
-}
+
+	bool ok{false};
+
+	while(trail[n]--)ans+='0';
+
+	int c{};
+
+	for(int i{};i<ans.size();i++){
+		if(c%76==0 and i>0){
+			cout<<"\n";
+		}
+		if(i==last[n] and last[n]){
+			cout<<"(";
+			ok=true;
+			c++;
+		}
+		cout<<ans[i];
+		c++;
+	}
+	if(ok){
+		if(c%76==0)cout<<"\n";
+		cout<<")";
+	}
+	c++;
+	cout<<"\n";
+}	
 
 int32_t main(){
 
-	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
+	// freopen("input.txt", "r", stdin);
+	// freopen("output.txt", "w", stdout);
 
-	//freopen("test.in", "r", stdin);
-	//freopen("test.out", "w", stdout);
+	freopen("fracdec.in", "r", stdin);
+	freopen("fracdec.out", "w", stdout);
 	
 	ios_base::sync_with_stdio(false);
     cin.tie(NULL); cout.tie(NULL);
