@@ -8,7 +8,6 @@ LANG: C++
 using namespace std;
 
 #define int long long int
-#define double long double
 const int inf{(int)1e18};
 
 class Line{
